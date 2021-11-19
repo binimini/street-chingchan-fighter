@@ -48,3 +48,18 @@ input {
     outline: none;
   }
 }
+.sidebar-hidden {
+  display: none;
+}
+
+.sidebar__unfolded {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  background-color: #ffb8b8;
+  z-index: 2;
+  cursor: pointer;
+}

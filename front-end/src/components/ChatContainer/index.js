@@ -31,23 +31,50 @@ function ChatContainer() {
     };
   }, [socketClient]);
 
-  useEffect(() => console.log(input), [input]);
+  const chatUnfold = useRef();
+  const chatFold = useRef();
+
+  const chatFoldFunction = (e) => {
+    chatUnfold.current.className = "sidebar-hidden";
+    chatFold.current.className = "chatContainerWrapper";
+  };
+
+  const chatUnfoldFunction = (e) => {
+    chatUnfold.current.className = "sidebar__unfolded";
+    chatFold.current.className = "sidebar-hidden";
+  };
 
   return (
-    <div className="chatContainerWrapper">
-      <div className="chatContainerText">* Chat</div>
-      <div className="chatContainerScroll" ref={scrollRef}>
-        {chats.map(({ userName, msg }, idx) => (
-          <Chat key={idx} userName={userName} msg={msg} />
-        ))}
+    <>
+      <div
+        className="sidebar__unfolded"
+        ref={chatUnfold}
+        onClick={chatFoldFunction}
+      >
+        채팅
       </div>
-      <input
-        className="chatInput"
-        onChange={({ target }) => setInput(target.value)}
-        onKeyPress={handleKeyPress}
-        value={input}
-      />
-    </div>
+      <div
+        className="sidebar-hidden"
+        ref={chatFold}
+        onClick={chatUnfoldFunction}
+      >
+        <div className="chatContainerText">* Chat</div>
+        <div className="chatContainerScroll" ref={scrollRef}>
+          {chats.map(({ userName, msg }, idx) => (
+            <Chat key={idx} userName={userName} msg={msg} />
+          ))}
+        </div>
+        <input
+          className="chatInput"
+          onChange={({ target }) => setInput(target.value)}
+          onKeyPress={handleKeyPress}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          value={input}
+        />
+      </div>
+    </>
   );
 }
 
