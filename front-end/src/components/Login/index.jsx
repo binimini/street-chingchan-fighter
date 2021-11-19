@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.scss";
 
 export default function Login() {
+  const [avatarIdx, setAvatarId] = useState(0);
+
   return (
     <div className="login__container">
       <div className="login__header">{`* 스트릿 칭찬 파이터 *`}</div>
