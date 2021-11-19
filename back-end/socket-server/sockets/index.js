@@ -38,7 +38,7 @@ const initSocket = (httpServer) => {
     initTimerSocket(namespace, socket);
   });
   initChatSocket(namespace);
-  initGameSocket(namespace);
+  initGameSocket(socket);
 };
 
 module.exports = initSocket;
