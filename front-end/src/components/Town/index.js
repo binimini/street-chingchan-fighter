@@ -9,11 +9,7 @@ const Town = () => {
       socketClient.emit("hello");
     }
   }, [socketClient]);
-  return (
-    <div>
-      <ChatContainer />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Town;
