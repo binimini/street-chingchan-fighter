@@ -1,4 +1,5 @@
 const { Server } = require("socket.io");
+const { randomUUID } = require("crypto");
 
 const initChatSocket = require("./chat");
 const initGameSocket = require("./game");
@@ -13,14 +14,29 @@ const initSocket = (httpServer) => {
   });
   const namespace = io.of("/");
   namespace.on("connection", (socket) => {
-    console.log(socket.id);
-    socket.on("hello", () => {
-      console.log("world");
+    initChatSocket(namespace, socket);
+    initGameSocket(namespace, socket);
+    initTimerSocket(namespace, socket);
+
+    socket.on("init fight", async (enemyID) => {
+      const roomID = randomUUID();
+      const socketList = await namespace.fetchSockets();
+
+      socket.join(roomID);
+      socketList.find((s) => s.id === enemyID).join(roomID);
+
+      namespace.to(roomID).emit("room created", {
+        members: [...namespace.adapter.rooms.get(roomID)],
+        roomID,
+      });
+    });
+
+    namespace.emit("user list", [...namespace.adapter.sids]);
+
+    socket.on("disconnect", () => {
+      namespace.emit("user list", [...namespace.adapter.sids]);
     });
   });
-  initChatSocket(namespace);
-  initGameSocket(namespace);
-  initTimerSocket(namespace);
 };
 
 module.exports = initSocket;
