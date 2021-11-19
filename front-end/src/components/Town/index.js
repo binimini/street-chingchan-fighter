@@ -1,3 +1,4 @@
+import ChatContainer from "../ChatContainer";
 import { useEffect } from "react";
 import { useSocket } from "../../context/SocketContext";
 
@@ -8,8 +9,11 @@ const Town = () => {
       socketClient.emit("hello");
     }
   }, [socketClient]);
-
-  return <div>hello</div>;
+  return (
+    <div>
+      <ChatContainer />
+    </div>
+  );
 };
 
 export default Town;
