@@ -1,8 +1,14 @@
-
+import Sidebar from "./Sidebar";
+import TownMap from "./TownMap";
 
 const Town = () => {
     return (
-        <div>hello</div>
+      <>
+        <div>
+          <Sidebar />
+          <TownMap />
+        </div>
+      </>
     )
 }
 
