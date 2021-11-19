@@ -1,11 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+
 .chatContainerWrapper {
   display: flex;
+  font-family: "Do Hyeon";
   flex-direction: column;
   align-items: center;
   width: 350px;
   height: 90vh;
   background: #ffb8b8;
   border-radius: 0px 30px 30px 0px;
+}
+
+.chatContainerScroll {
+  overflow: scroll;
+  height: 70vh;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.chatContainerText {
+  font-style: normal;
+  font-weight: normal;
+  color: #ffffff;
+  font-size: 40px;
+  line-height: 50px;
 }
 
 .chatInput {
@@ -16,4 +35,16 @@
   border: 2px solid #ffffff;
   box-sizing: border-box;
   border-radius: 10px;
+}
+
+input {
+  background-color: inherit;
+  color: #ffffff;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 25px;
+  &:focus {
+    outline: none;
+  }
 }

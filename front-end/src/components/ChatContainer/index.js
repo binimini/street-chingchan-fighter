@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSocket } from "../../context/SocketContext";
 import Chat from "../Chat";
 import "./style.scss";
 
 function ChatContainer() {
   const socketClient = useSocket();
+  const scrollRef = useRef();
   const [chats, setChats] = useState([]);
   const [input, setInput] = useState("");
 
   const handleKeyPress = useCallback(
     (event) => {
-      console.log(event.key);
       if (!socketClient) return;
       if (event.key !== "Enter") return;
       socketClient.emit("chat", { userName: "test", msg: input });
+      setInput("");
       event.preventDefault();
     },
     [input, socketClient]
   );
 
   useEffect(() => {
-    console.log(socketClient);
     if (!socketClient) return;
-    console.log(socketClient);
-    socketClient.on("publish chat", (chat) =>
-      setChats((prev) => [...prev, chat])
-    );
+    socketClient.on("publish chat", (chat) => {
+      setChats((prev) => [...prev, chat]);
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    });
     return () => {
       socketClient.off("publish chat");
     };
@@ -35,14 +35,17 @@ function ChatContainer() {
 
   return (
     <div className="chatContainerWrapper">
-      <div></div>
-      {chats.map(({ userName, msg }, idx) => (
-        <Chat key={idx} userName={userName} msg={msg} />
-      ))}
+      <div className="chatContainerText">* Chat</div>
+      <div className="chatContainerScroll" ref={scrollRef}>
+        {chats.map(({ userName, msg }, idx) => (
+          <Chat key={idx} userName={userName} msg={msg} />
+        ))}
+      </div>
       <input
         className="chatInput"
         onChange={({ target }) => setInput(target.value)}
         onKeyPress={handleKeyPress}
+        value={input}
       />
     </div>
   );
