@@ -7,7 +7,7 @@ function JoinPage() {
   const nickNameRef = useRef();
   const socketClient = useSocket();
   const handleNicknameInput = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && `${nickNameRef.current.value}`.trim().length > 0) {
       socketClient.emit("set nickname", nickNameRef.current.value);
     }
   };

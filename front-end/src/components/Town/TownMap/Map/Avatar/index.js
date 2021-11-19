@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSocketData } from "../../../../../context/SocketContext";
+import { useSocket, useSocketData } from "../../../../../context/SocketContext";
 
 import "./style.scss";
 
@@ -162,6 +162,7 @@ const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
 
 const Avatar = () => {
   const { nickname } = useSocketData();
+  const socketClient = useSocket();
   useEffect(() => {
     const avatarCanvas = document.getElementById("test-id");
     const ctx = avatarCanvas.getContext("2d");
@@ -199,16 +200,23 @@ const Avatar = () => {
 
     const keyDownEventListener = (event) => {
       keyDownHandler(event, avatarCanvas, ctx, img, main_map_arr, sendCharPos);
+      if (socketClient) {
+        socketClient.emit("user position update", {
+          x: MY_AVATAR.x,
+          y: MY_AVATAR.y,
+        });
+      }
     };
 
     const throttledKeydown = throttle(keyDownEventListener, 75);
-
-    window.addEventListener("keydown", throttledKeydown);
+    if (nickname) {
+      window.addEventListener("keydown", throttledKeydown);
+    }
 
     return () => {
       window.removeEventListener("keydown", throttledKeydown);
     };
-  }, []);
+  }, [nickname]);
   return (
     <>
       <div className={"avatar"}>

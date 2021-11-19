@@ -1,7 +1,8 @@
 import { useEffect } from "react";
+import { useSocketData } from "../../../../context/SocketContext";
 import Avatar from "./Avatar";
 
-import './style.scss';
+import "./style.scss";
 
 const drawMap = () => {
   const mapCanvas = document.getElementById("map-canvas");
@@ -18,18 +19,21 @@ const drawMap = () => {
 };
 
 const Map = () => {
+  const { userList } = useSocketData();
   useEffect(() => {
     drawMap();
   }, []);
 
+  console.log(userList);
+
   return (
     <>
-      <div className={'map-container'}>
+      <div className={"map-container"}>
         <canvas id="map-canvas"></canvas>
         <Avatar />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Map;

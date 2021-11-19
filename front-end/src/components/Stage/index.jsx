@@ -23,7 +23,7 @@ function Stage() {
   }
   return (
     <>
-      {userList.map(([id]) => (
+      {userList.map(({ id }) => (
         <div
           key={id}
           className={id === socketClient.id ? "me" : ""}

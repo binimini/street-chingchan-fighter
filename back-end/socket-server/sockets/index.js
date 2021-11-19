@@ -12,15 +12,35 @@ const initSocket = (httpServer) => {
       origin: "*",
     },
   });
+
   const namespace = io.of("/");
-  namespace.on("connection", (socket) => {
+
+  const updateUserList = async () => {
+    const socketList = await namespace.fetchSockets();
+
+    return socketList.map((s) => ({
+      id: s.id,
+      x: s._position.x,
+      y: s._position.y,
+      nickname: s.nickname,
+    }));
+  };
+
+  namespace.on("connection", async (socket) => {
     initChatSocket(namespace, socket);
     initGameSocket(namespace, socket);
     initTimerSocket(namespace, socket);
+    socket._position = { x: 0, y: 0 };
 
     socket.on("set nickname", (nickname) => {
       socket.nickname = nickname;
       socket.emit("set nickname fulfilled", nickname);
+    });
+
+    socket.on("user position update", async ({ x, y }) => {
+      socket._position.x = x;
+      socket._position.y = y;
+      namespace.emit("user list", await updateUserList());
     });
 
     socket.on("init fight", async (enemyID) => {
@@ -36,11 +56,11 @@ const initSocket = (httpServer) => {
       });
     });
 
-    namespace.emit("user list", [...namespace.adapter.sids]);
-
-    socket.on("disconnect", () => {
-      namespace.emit("user list", [...namespace.adapter.sids]);
+    socket.on("disconnect", async () => {
+      namespace.emit("user list", await updateUserList());
     });
+
+    namespace.emit("user list", await updateUserList());
   });
 };
 
