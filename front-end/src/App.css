@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+.me {
+  background-color: #ff8585;
+  color: white;
+}
+.room__container {
+  border: 1px solid #ff8585;
+}
+.room__start_btn {
+  background-color: #ff8585;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+.room__start_btn:disabled {
+  background-color: #ffb8b8;
+}
