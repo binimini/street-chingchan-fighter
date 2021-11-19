@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Avatar from "./Avatar";
 
 import './style.scss';
 
@@ -25,6 +26,7 @@ const Map = () => {
     <>
       <div className={'map-container'}>
         <canvas id="map-canvas"></canvas>
+        <Avatar />
       </div>
     </>
   )

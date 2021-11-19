@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useSocket } from "../../context/SocketContext";
 import TownMap from "./TownMap";
 
+import './style.scss';
+
 const Town = () => {
   const socketClient = useSocket();
   useEffect(() => {
@@ -12,7 +14,7 @@ const Town = () => {
 
   return (
     <>
-      <div>
+      <div className={'town-map'}>
         <TownMap />
       </div>
     </>
