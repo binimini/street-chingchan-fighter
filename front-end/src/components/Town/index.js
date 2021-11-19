@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSocket } from "../../context/SocketContext";
+import TownMap from "./TownMap";
 
 const Town = () => {
   const socketClient = useSocket();
@@ -9,7 +10,13 @@ const Town = () => {
     }
   }, [socketClient]);
 
-  return <div>hello</div>;
+  return (
+    <>
+      <div>
+        <TownMap />
+      </div>
+    </>
+  )
 };
 
 export default Town;
