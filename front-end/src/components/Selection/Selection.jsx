@@ -9,18 +9,22 @@ const Selection = ({praise, isResult}) => {
   const {roomID} = useSocketData();
 
   const handleClickBeforeGame = (praise) => {
+    if (socketClient) {
     socketClient.emit(PICK_PRAISE, {
       roomId: roomID,
       socketId: socketClient.id,
       praiseId: praise.id
     });
   }
+  }
   const handleClickAfterGame = (praise) => {
+    if (socketClient) {
     socketClient.emit(SEND_ANSWER, {
       roomId: roomID,
       socketId: socketClient.id,
       praiseId: praise.id
     });
+  }
   }
 
   return (
