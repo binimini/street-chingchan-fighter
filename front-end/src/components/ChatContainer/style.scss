@@ -1,0 +1,19 @@
+.chatContainerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  height: 90vh;
+  background: #ffb8b8;
+  border-radius: 0px 30px 30px 0px;
+}
+
+.chatInput {
+  position: fixed;
+  width: 305px;
+  height: 116px;
+  bottom: 11vh;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
