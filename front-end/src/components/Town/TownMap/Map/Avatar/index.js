@@ -44,6 +44,8 @@ const drawAvatar = (ctx, img, src_x_pos, width, height) => {
 };
 
 const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
+  const [beforeX, beforeY] = [MY_AVATAR.x, MY_AVATAR.y];
+
   switch (event.key) {
     case 'ArrowLeft':
       MY_AVATAR.x -= STRIDE;
@@ -63,6 +65,11 @@ const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
       break;
     default:
       break;
+  }
+
+  if (!avatarConflictCheck(main_map_arr, beforeX, beforeY, MY_AVATAR.x, MY_AVATAR.y)) {
+    [MY_AVATAR.x, MY_AVATAR.y] = [beforeX, beforeY]
+    return;
   }
 
   canvas.closest('div').style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
@@ -88,6 +95,26 @@ const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
   // MY_AVATAR.avatarSrcPosition = avatarSrcPosition;
   // sendCharPos(MY_AVATAR);
 }
+
+const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
+  let tmpsX = sX < dX ? sX : dX;
+  let tmpdX = sX > dX ? sX : dX;
+  let tmpsY = sY < dY ? sY : dY;
+  let tmpdY = sY > dY ? sY : dY;
+
+  if (!(0 <= tmpdX && tmpdX < main_map_arr[0].length && 0 <= tmpdY && tmpdY < main_map_arr.length))
+    return false;
+
+  for (let i = tmpsX; i < tmpdX; i++) {
+    for (let j = tmpsY; j < tmpdY; j++) {
+      if (main_map_arr[i][j] !== 0) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
 
 const Avatar = () => {
   useEffect(() => {
