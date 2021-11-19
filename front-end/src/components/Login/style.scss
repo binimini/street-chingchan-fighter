@@ -86,4 +86,13 @@ body,
       }
     }
   }
+  .login__button {
+    box-sizing: border-box;
+    margin: 50px auto;
+    border: 2px solid #ff8585;
+    background-color: #ffb8b8;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 30px;
+  }
 }
