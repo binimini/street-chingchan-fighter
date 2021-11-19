@@ -12,6 +12,12 @@ const initSocket = (httpServer) => {
     },
   });
   const namespace = io.of("/");
+  namespace.on("connection", (socket) => {
+    console.log(socket.id);
+    socket.on("hello", () => {
+      console.log("world");
+    });
+  });
   initChatSocket(namespace);
   initGameSocket(namespace);
   initTimerSocket(namespace);
