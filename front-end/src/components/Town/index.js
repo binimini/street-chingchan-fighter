@@ -1,15 +1,11 @@
-import { useEffect } from "react";
-import { useSocket } from "../../context/SocketContext";
+import Stage from "../Stage";
 
 const Town = () => {
-  const socketClient = useSocket();
-  useEffect(() => {
-    if (socketClient) {
-      socketClient.emit("hello");
-    }
-  }, [socketClient]);
-
-  return <div>hello</div>;
+  return (
+    <div>
+      <Stage />
+    </div>
+  );
 };
 
 export default Town;
