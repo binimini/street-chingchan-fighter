@@ -18,6 +18,11 @@ const initSocket = (httpServer) => {
     initGameSocket(namespace, socket);
     initTimerSocket(namespace, socket);
 
+    socket.on("set nickname", (nickname) => {
+      socket.nickname = nickname;
+      socket.emit("set nickname fulfilled", nickname);
+    });
+
     socket.on("init fight", async (enemyID) => {
       const roomID = randomUUID();
       const socketList = await namespace.fetchSockets();

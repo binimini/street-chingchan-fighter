@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import { useSocketData } from "../../../../../context/SocketContext";
 
-import './style.scss';
+import "./style.scss";
 
 const makeMapArray = (width, height) => {
   return Array(height)
@@ -26,8 +27,8 @@ const main_map_arr = makeMapArray(2448, 2144);
 const MY_AVATAR = {
   x: 0,
   y: 0,
-  avatarSrcPosition: 0
-}
+  avatarSrcPosition: 0,
+};
 
 const LEFT_POS = 128;
 const RIGHT_POS = 320;
@@ -40,39 +41,63 @@ let avatarSrcPosition = 0;
 
 const drawAvatar = (ctx, img, src_x_pos, width, height) => {
   ctx.clearRect(0, 0, width, height);
-  ctx.drawImage(img, src_x_pos, 0, img.naturalWidth / 16, img.naturalHeight, 0, 0, width, height);
+  ctx.drawImage(
+    img,
+    src_x_pos,
+    0,
+    img.naturalWidth / 16,
+    img.naturalHeight,
+    0,
+    0,
+    width,
+    height
+  );
 };
 
 const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
   const [beforeX, beforeY] = [MY_AVATAR.x, MY_AVATAR.y];
 
   switch (event.key) {
-    case 'ArrowLeft':
+    case "ArrowLeft":
       MY_AVATAR.x -= STRIDE;
-      avatarSrcPosition = avatarSrcPosition === LEFT_POS ? LEFT_POS + NEXT_POS : LEFT_POS;
+      avatarSrcPosition =
+        avatarSrcPosition === LEFT_POS ? LEFT_POS + NEXT_POS : LEFT_POS;
       break;
-    case 'ArrowUp':
+    case "ArrowUp":
       MY_AVATAR.y -= STRIDE;
-      avatarSrcPosition = avatarSrcPosition === UP_POS ? UP_POS + NEXT_POS : UP_POS;
-      break;  
-    case 'ArrowRight':
-      MY_AVATAR.x += STRIDE;
-      avatarSrcPosition = avatarSrcPosition !== RIGHT_POS ? RIGHT_POS : RIGHT_POS + NEXT_POS;
+      avatarSrcPosition =
+        avatarSrcPosition === UP_POS ? UP_POS + NEXT_POS : UP_POS;
       break;
-    case 'ArrowDown':
+    case "ArrowRight":
+      MY_AVATAR.x += STRIDE;
+      avatarSrcPosition =
+        avatarSrcPosition !== RIGHT_POS ? RIGHT_POS : RIGHT_POS + NEXT_POS;
+      break;
+    case "ArrowDown":
       MY_AVATAR.y += STRIDE;
-      avatarSrcPosition = avatarSrcPosition !== DOWN_POS ? DOWN_POS : DOWN_POS + NEXT_POS;
+      avatarSrcPosition =
+        avatarSrcPosition !== DOWN_POS ? DOWN_POS : DOWN_POS + NEXT_POS;
       break;
     default:
       break;
   }
 
-  if (!avatarConflictCheck(main_map_arr, beforeX, beforeY, MY_AVATAR.x, MY_AVATAR.y)) {
-    [MY_AVATAR.x, MY_AVATAR.y] = [beforeX, beforeY]
+  if (
+    !avatarConflictCheck(
+      main_map_arr,
+      beforeX,
+      beforeY,
+      MY_AVATAR.x,
+      MY_AVATAR.y
+    )
+  ) {
+    [MY_AVATAR.x, MY_AVATAR.y] = [beforeX, beforeY];
     return;
   }
 
-  canvas.closest('div').style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
+  canvas.closest(
+    "div"
+  ).style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawAvatar(ctx, img, avatarSrcPosition, canvas.width, canvas.height);
 
@@ -80,21 +105,33 @@ const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
   const user_window_middle_height = window.innerHeight / 2;
   const avatar_window_left = canvas.getBoundingClientRect().x;
   const avatar_window_top = canvas.getBoundingClientRect().y;
-  const container = document.querySelector('.map-container');
+  const container = document.querySelector(".map-container");
 
-  if (avatar_window_left >= user_window_middle_width && event.key === "ArrowRight") {
+  if (
+    avatar_window_left >= user_window_middle_width &&
+    event.key === "ArrowRight"
+  ) {
     container.scroll(container.scrollLeft + STRIDE, container.scrollTop);
-  } else if (avatar_window_top >= user_window_middle_height && event.key === "ArrowDown") {
+  } else if (
+    avatar_window_top >= user_window_middle_height &&
+    event.key === "ArrowDown"
+  ) {
     container.scroll(container.scrollLeft, container.scrollTop + STRIDE);
-  } else if (avatar_window_left < user_window_middle_width && event.key === "ArrowLeft") {
+  } else if (
+    avatar_window_left < user_window_middle_width &&
+    event.key === "ArrowLeft"
+  ) {
     container.scroll(container.scrollLeft - STRIDE, container.scrollTop);
-  } else if (avatar_window_top < user_window_middle_height && event.key === "ArrowUp") {
+  } else if (
+    avatar_window_top < user_window_middle_height &&
+    event.key === "ArrowUp"
+  ) {
     container.scroll(container.scrollLeft, container.scrollTop - STRIDE);
   }
 
   // MY_AVATAR.avatarSrcPosition = avatarSrcPosition;
   // sendCharPos(MY_AVATAR);
-}
+};
 
 const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
   let tmpsX = sX < dX ? sX : dX;
@@ -102,7 +139,14 @@ const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
   let tmpsY = sY < dY ? sY : dY;
   let tmpdY = sY > dY ? sY : dY;
 
-  if (!(0 <= tmpdX && tmpdX < main_map_arr[0].length && 0 <= tmpdY && tmpdY < main_map_arr.length))
+  if (
+    !(
+      0 <= tmpdX &&
+      tmpdX < main_map_arr[0].length &&
+      0 <= tmpdY &&
+      tmpdY < main_map_arr.length
+    )
+  )
     return false;
 
   for (let i = tmpsX; i < tmpdX; i++) {
@@ -117,8 +161,9 @@ const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
 };
 
 const Avatar = () => {
+  const { nickname } = useSocketData();
   useEffect(() => {
-    const avatarCanvas = document.getElementById('test-id');
+    const avatarCanvas = document.getElementById("test-id");
     const ctx = avatarCanvas.getContext("2d");
     const img = new Image();
 
@@ -127,7 +172,9 @@ const Avatar = () => {
       avatarCanvas.width = img.naturalWidth / 16 + 20;
       avatarCanvas.height = img.naturalHeight + 20;
 
-      avatarCanvas.closest("div").style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
+      avatarCanvas.closest(
+        "div"
+      ).style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
       drawAvatar(ctx, img, 0, avatarCanvas.width, avatarCanvas.height);
     };
 
@@ -148,28 +195,28 @@ const Avatar = () => {
       };
     };
 
-    const sendCharPos = () => {}
+    const sendCharPos = () => {};
 
     const keyDownEventListener = (event) => {
       keyDownHandler(event, avatarCanvas, ctx, img, main_map_arr, sendCharPos);
-    }
+    };
 
     const throttledKeydown = throttle(keyDownEventListener, 75);
 
-    window.addEventListener('keydown', throttledKeydown);
+    window.addEventListener("keydown", throttledKeydown);
 
     return () => {
-      window.removeEventListener('keydown', throttledKeydown);
-    }
-  }, [])
+      window.removeEventListener("keydown", throttledKeydown);
+    };
+  }, []);
   return (
     <>
-      <div className={'avatar'}>
+      <div className={"avatar"}>
         <canvas id="test-id"></canvas>
-        <p>test-id</p>
+        <p>{nickname}</p>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Avatar;

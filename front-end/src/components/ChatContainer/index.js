@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useSocket } from "../../context/SocketContext";
+import { useSocket, useSocketData } from "../../context/SocketContext";
 import Chat from "../Chat";
 import "./style.scss";
 
 function ChatContainer() {
   const socketClient = useSocket();
+  const { nickname } = useSocketData();
   const scrollRef = useRef();
   const [chats, setChats] = useState([]);
   const [input, setInput] = useState("");
@@ -13,11 +14,11 @@ function ChatContainer() {
     (event) => {
       if (!socketClient) return;
       if (event.key !== "Enter") return;
-      socketClient.emit("chat", { userName: "test", msg: input });
+      socketClient.emit("chat", { userName: nickname, msg: input });
       setInput("");
       event.preventDefault();
     },
-    [input, socketClient]
+    [input, nickname, socketClient]
   );
 
   useEffect(() => {
