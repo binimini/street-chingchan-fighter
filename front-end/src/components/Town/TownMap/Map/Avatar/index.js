@@ -154,7 +154,7 @@ const Avatar = () => {
       keyDownHandler(event, avatarCanvas, ctx, img, main_map_arr, sendCharPos);
     }
 
-    const throttledKeydown = throttle(keyDownEventListener, 100);
+    const throttledKeydown = throttle(keyDownEventListener, 75);
 
     window.addEventListener('keydown', throttledKeydown);
 
