@@ -8,27 +8,23 @@ const Selection = ({praise, isResult}) => {
   const socketClient = useSocket();
   const {roomID} = useSocketData();
 
-  const handleClickBeforeGame = () => {
+  const handleClickBeforeGame = (praise) => {
     socketClient.emit(PICK_PRAISE, {
       roomId: roomID,
       socketId: socketClient.id,
-      praiseId: 0
+      praiseId: praise.id
     });
   }
-  const handleClickAfterGame = () => {
+  const handleClickAfterGame = (praise) => {
     socketClient.emit(SEND_ANSWER, {
       roomId: roomID,
       socketId: socketClient.id,
-      praiseId: 0
+      praiseId: praise.id
     });
   }
 
-    useEffect(() => {
-      
-    })
-
   return (
-    <button onClick={isResult ? handleClickAfterGame : handleClickBeforeGame}>{praise}</button>
+    <button onClick={isResult ? handleClickAfterGame(praise) : handleClickBeforeGame(praise)}>{praise.text}</button>
   );
 }
 

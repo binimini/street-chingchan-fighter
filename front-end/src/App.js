@@ -2,16 +2,14 @@ import "./App.css";
 import SelectionList from "./container/SelectionList";
 import Town from "./components/Town/index";
 import SocketProvider from "./context/SocketContext";
-
-const lst = ['1','2','3','4'];
+import {praiseList} from "./dummy.json";
 
 const App = () => {
-  
   return (
     <div className="App">
       <SocketProvider>
         <Town />
-        <SelectionList praiseList={lst}/>
+        <SelectionList praiseList={praiseList}/>
       </SocketProvider>
     </div>
   );

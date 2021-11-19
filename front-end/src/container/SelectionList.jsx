@@ -5,7 +5,7 @@ const SelectionList = ({praiseList}) => {
   return (
         <>
         {praiseList.map((praise) => 
-            <Selection key={Date.now().toString()+praise} praise={praise} isResult={isResult}/>
+            <Selection key={Date.now().toString()+praise.id} praise={praise} isResult={isResult}/>
         )}
         </>
   );

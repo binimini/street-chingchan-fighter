@@ -36,9 +36,9 @@ const initSocket = (httpServer) => {
       namespace.emit("user list", [...namespace.adapter.sids]);
     });
     initTimerSocket(namespace, socket);
+    initChatSocket(namespace);
+    initGameSocket(socket);
   });
-  initChatSocket(namespace);
-  initGameSocket(socket);
 };
 
 module.exports = initSocket;
