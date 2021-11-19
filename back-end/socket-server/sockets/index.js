@@ -14,9 +14,10 @@ const initSocket = (httpServer) => {
   });
   const namespace = io.of("/");
   namespace.on("connection", (socket) => {
-    socket.on("hello", () => {
-      // console.log("world");
-    });
+    initChatSocket(namespace, socket);
+    initGameSocket(namespace, socket);
+    initTimerSocket(namespace, socket);
+
     socket.on("init fight", async (enemyID) => {
       const roomID = randomUUID();
       const socketList = await namespace.fetchSockets();
@@ -35,9 +36,6 @@ const initSocket = (httpServer) => {
     socket.on("disconnect", () => {
       namespace.emit("user list", [...namespace.adapter.sids]);
     });
-    initTimerSocket(namespace, socket);
-    initChatSocket(namespace);
-    initGameSocket(socket);
   });
 };
 

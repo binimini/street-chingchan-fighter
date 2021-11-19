@@ -10,7 +10,7 @@ class RoomStore {
     }
 }
 
-const initGameSocket = (socket) => {
+const initGameSocket = (namespace, socket) => {
     const roomStore = new RoomStore();
     socket.on(PICK_PRAISE,(pick) => {
         const {roomId, socketId, praiseId } = pick;
