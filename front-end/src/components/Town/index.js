@@ -1,13 +1,17 @@
-import ChatContainer from "../ChatContainer";
-import Stage from "../Stage";
+import { useEffect } from "react";
+import { useSocket } from "../../context/SocketContext";
+import TownMap from "./TownMap";
+
+import './style.scss';
 
 const Town = () => {
   return (
-    <div>
-      <ChatContainer />
-      <Stage />
-    </div>
-  );
+    <>
+      <div className={'town-map'}>
+        <TownMap />
+      </div>
+    </>
+  )
 };
 
 export default Town;
