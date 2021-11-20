@@ -116,7 +116,7 @@ const Avatar = () => {
 
   useEffect(() => {
     if(!socketClient) return;
-    const avatarCanvas = document.getElementById('#my-avatar');
+    const avatarCanvas = document.getElementById('my-avatar');
     const ctx = avatarCanvas.getContext("2d");
     const img = new Image();
 
@@ -168,7 +168,7 @@ const Avatar = () => {
   return (
     <>
       <div className={"avatar"}>
-        <canvas id='#my-avatar'></canvas>
+        <canvas id='my-avatar'></canvas>
         <p>{nickname}</p>
       </div>
     </>

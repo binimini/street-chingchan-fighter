@@ -16,7 +16,6 @@ const App = () => {
       ) : (
         <>
           <ChatContainer />
-          <Town />
         </>
       )}
     </div>
