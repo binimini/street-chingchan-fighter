@@ -23,7 +23,7 @@ const initSocket = (httpServer) => {
       x: s._position.x,
       y: s._position.y,
       nickname: s.nickname,
-      avatarSrcPosition: s._position.avatarSrcPosition
+      avatarSrcPosition: s._position.avatarSrcPosition,
       avatarIdx: s.avatarIdx
     }));
   };
