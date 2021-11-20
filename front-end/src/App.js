@@ -1,6 +1,5 @@
 import "./App.css";
 import ChatContainer from "./components/ChatContainer";
-import Town from "./components/Town/index";
 import JoinPage from "./components/JoinPage";
 import { useSocketData } from "./context/SocketContext";
 
