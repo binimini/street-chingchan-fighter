@@ -1,6 +1,5 @@
 import "./App.css";
 import ChatContainer from "./components/ChatContainer";
-import SelectionList from "./container/SelectionList";
 import Town from "./components/Town/index";
 import JoinPage from "./components/JoinPage";
 import { useSocketData } from "./context/SocketContext";
@@ -18,7 +17,6 @@ const App = () => {
         <>
           <ChatContainer />
           <Town />
-          <SelectionList isGame={false} />
         </>
       )}
     </div>

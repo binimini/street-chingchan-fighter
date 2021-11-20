@@ -35,5 +35,13 @@
       display: flex;
       justify-content: center;
     }
+
+    .selection__container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      margin-top: 73px;
+    }
   }
 }

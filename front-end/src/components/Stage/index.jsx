@@ -1,15 +1,13 @@
 import { useCallback, useEffect } from "react";
 import { useSocket, useSocketData } from "../../context/SocketContext";
 import MessageBox from "../MessageBox";
+import SelectionList from "../../container/SelectionList";
+
 import "./style.scss";
 
 function Stage() {
   const socketClient = useSocket();
   const { userList, roomMembers, roomID, canStart, roomTime } = useSocketData();
-
-  const initFight = (id) => {
-    socketClient.emit("init fight", id);
-  };
 
   const handleFightStart = () => {
     socketClient.emit("fight start", roomID);
@@ -47,7 +45,7 @@ function Stage() {
           <div className="room__title">* 받고싶은 칭찬을 골라주세요 *</div>
           <div className="room__content">
             <div className="message_box__container">
-              <MessageBox>
+              <MessageBox variant="lg">
                 <p>
                   어떤 칭찬이{" "}
                   {
@@ -59,6 +57,10 @@ function Stage() {
                 <p>ヽ(✿ﾟ▽ﾟ)ノ</p>
               </MessageBox>
             </div>
+            <div className="selection__container">
+              <SelectionList isGame={false} />
+            </div>
+
             {roomMembers.length > 0 &&
               roomMembers.map(({ id, nickname }) => (
                 <div key={id}>
@@ -78,19 +80,6 @@ function Stage() {
           </div>
         </div>
       )}
-      {/* {userList.map(({ id }) => (
-        <div
-          key={id}
-          className={id === socketClient.id ? "me" : ""}
-          onClick={() => {
-            if (id !== socketClient.id) {
-              initFight(id);
-            }
-          }}
-        >
-          {id}
-        </div>
-      ))} */}
     </>
   );
 }
