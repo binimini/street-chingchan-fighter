@@ -43,5 +43,12 @@
       gap: 48px;
       margin-top: 73px;
     }
+
+    .result__container {
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 58px;
+      column-gap: 70px;
+    }
   }
 }

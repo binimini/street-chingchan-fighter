@@ -80,6 +80,11 @@ const initSocket = (httpServer) => {
       });
     });
 
+    socket.on("leave room", (roomID) => {
+      socket.leave(roomID);
+      socket.emit("left room", roomID);
+    });
+
     socket.on("disconnect", async () => {
       namespace.emit("user list", await updateUserList());
     });

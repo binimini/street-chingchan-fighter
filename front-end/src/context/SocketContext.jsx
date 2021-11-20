@@ -11,9 +11,22 @@ function SocketProvider({ children }) {
   const [roomMembers, setRoomMembers] = useState([]);
   const [roomID, setroomID] = useState("");
   const [canStart, setCanStart] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   const [roomTime, setRoomTime] = useState(0);
   const [nickname, setNickname] = useState(null);
   const [avatarIdx, setAvatarIdx] = useState(0);
+  const [gameResult, setGameResult] = useState({
+    user1: {
+      id: 1234,
+      pick: "asdf",
+      guess: "ffdf",
+    },
+    user2: {
+      id: 4321,
+      pick: "123123",
+      guess: "545545",
+    },
+  });
 
   useEffect(() => {
     const socketConnection = io("/", {
@@ -39,6 +52,7 @@ function SocketProvider({ children }) {
       socketClient.on("room created", ({ members, roomID }) => {
         setRoomMembers(members);
         setroomID(roomID);
+        setIsFinished(false);
         setCanStart(true);
         setRoomTime(0);
       });
@@ -50,6 +64,20 @@ function SocketProvider({ children }) {
       });
       socketClient.on("time update", (newTime) => {
         setRoomTime(newTime);
+      });
+      socketClient.on("fight timeout", () => {
+        setRoomTime(0);
+        setIsFinished(true);
+      });
+      socketClient.on("game result", (result) => {
+        setRoomTime(0);
+        setIsFinished(true);
+        // console.log(result);
+        // setGameResult({ ...result });
+      });
+
+      socketClient.on("left room", () => {
+        setroomID(null);
       });
     }
   }, [socketClient]);
@@ -65,6 +93,8 @@ function SocketProvider({ children }) {
           roomTime,
           nickname,
           avatarIdx,
+          isFinished,
+          gameResult,
         }}
       >
         {children}
@@ -81,7 +111,12 @@ export const useSocket = () => useContext(SocketContext);
 
 /**
  *
- * @returns {{userList: [], roomMembers: [], roomID: string, canStart: boolean, roomTime: number, nickname: string}}
+ * @returns {{userList: [], roomMembers: [], roomID: string,
+ * canStart: boolean,
+ * roomTime: number,
+ * nickname: string,
+ * isFinished: boolean,
+ * gameResult: {}}}
  */
 export const useSocketData = () => useContext(SocketDataContext);
 

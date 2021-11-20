@@ -13,6 +13,11 @@ const initTimerSocket = (namespace, socket) => {
     let time = 0;
     const gameInterval = setInterval(() => {
       namespace.to(roomID).emit("time update", ++time);
+
+      if (time > 10) {
+        namespace.to(roomID).emit("fight timeout");
+        clearInterval(gameInterval);
+      }
     }, 1000);
   });
 };
