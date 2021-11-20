@@ -6,16 +6,15 @@ import { praiseList } from "./dummy.json";
 import JoinPage from "./components/JoinPage";
 import { useSocketData } from "./context/SocketContext";
 import Login from "./components/Login/index";
-import SocketProvider from "./context/SocketContext";
 
 const App = () => {
   const { nickname } = useSocketData();
   return (
     <div className="App">
-      {!nickname && <JoinPage />}
-      <ChatContainer />
-      <Town />
-      <SelectionList praiseList={praiseList} />
+      {!nickname ? <JoinPage /> : <><ChatContainer />
+        <Town />
+        <SelectionList praiseList={praiseList} />
+      </>}
     </div>
   );
 };
