@@ -1,0 +1,38 @@
+.button {
+  position: relative;
+  width: 300px;
+  margin: 77px auto;
+  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.25));
+  &::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 3px;
+    background: #ff8c8c;
+    border-radius: 50px;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .button__text {
+    font-family: Jua;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 26px;
+    text-align: center;
+    color: #ff8585;
+    border: none;
+    background: #fee3e3;
+    border: 3px solid #ffb7b7;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding: 10px 0;
+    cursor: pointer;
+
+    &:hover {
+      background: #fb9898;
+      color: white;
+    }
+  }
+}
