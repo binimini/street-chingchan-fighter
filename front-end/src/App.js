@@ -2,7 +2,6 @@ import "./App.css";
 import ChatContainer from "./components/ChatContainer";
 import SelectionList from "./container/SelectionList";
 import Town from "./components/Town/index";
-import { praiseList } from "./dummy.json";
 import JoinPage from "./components/JoinPage";
 import { useSocketData } from "./context/SocketContext";
 
@@ -12,7 +11,7 @@ const App = () => {
     <div className="App">
       {!nickname ? <JoinPage /> : <><ChatContainer />
         <Town />
-        <SelectionList praiseList={praiseList} />
+        <SelectionList isGame={false}/>
       </>}
     </div>
   );

@@ -1,0 +1,26 @@
+.selectionWrapper {
+  color: #ff8585;
+  position: relative;
+  width: 770px;
+  height: 60px;
+  background: #ff8c8c;
+  border-radius: 50px;
+  border: none;
+}
+
+.selectionText {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  background: #ffffff;
+  border-radius: 50px;
+  border: #ff8585 1px solid;
+}
