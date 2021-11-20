@@ -13,6 +13,7 @@ function SocketProvider({ children }) {
   const [canStart, setCanStart] = useState(false);
   const [roomTime, setRoomTime] = useState(0);
   const [nickname, setNickname] = useState(null);
+  const [avatarIdx, setAvatarIdx] = useState(0);
 
   useEffect(() => {
     const socketConnection = io("/", {
@@ -28,8 +29,9 @@ function SocketProvider({ children }) {
 
   useEffect(() => {
     if (socketClient) {
-      socketClient.on("set nickname fulfilled", (nickname) => {
-        setNickname(nickname);
+      socketClient.on("set userInfo fulfilled", (userInfo) => {
+        setNickname(userInfo.nickname);
+        setAvatarIdx(userInfo.avatarIdx);
       });
       socketClient.on("user list", (list) => {
         setUserList(list);
@@ -52,7 +54,15 @@ function SocketProvider({ children }) {
   return (
     <SocketContext.Provider value={socketClient}>
       <SocketDataContext.Provider
-        value={{ userList, roomMembers, roomID, canStart, roomTime, nickname }}
+        value={{
+          userList,
+          roomMembers,
+          roomID,
+          canStart,
+          roomTime,
+          nickname,
+          avatarIdx,
+        }}
       >
         {children}
       </SocketDataContext.Provider>

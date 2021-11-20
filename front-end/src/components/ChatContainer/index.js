@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSocket, useSocketData } from "../../context/SocketContext";
 import Chat from "../Chat";
+import Stage from "../Stage";
 import "./style.scss";
 
 function ChatContainer() {
@@ -46,7 +47,7 @@ function ChatContainer() {
   };
 
   return (
-    <>
+    <div className="chat__container__root">
       <div
         className="sidebar__unfolded"
         ref={chatUnfold}
@@ -75,7 +76,8 @@ function ChatContainer() {
           value={input}
         />
       </div>
-    </>
+      <Stage />
+    </div>
   );
 }
 

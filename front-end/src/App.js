@@ -5,7 +5,6 @@ import Town from "./components/Town/index";
 import { praiseList } from "./dummy.json";
 import JoinPage from "./components/JoinPage";
 import { useSocketData } from "./context/SocketContext";
-import Login from "./components/Login/index";
 
 const App = () => {
   const { nickname } = useSocketData();

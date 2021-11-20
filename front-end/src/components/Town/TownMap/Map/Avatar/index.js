@@ -161,7 +161,7 @@ const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
 };
 
 const Avatar = () => {
-  const { nickname } = useSocketData();
+  const { nickname, avatarIdx } = useSocketData();
   const socketClient = useSocket();
 
   useEffect(() => {
@@ -170,7 +170,9 @@ const Avatar = () => {
     const ctx = avatarCanvas.getContext("2d");
     const img = new Image();
 
-    img.src = `/images/avatars/light_formaldress_red_brown.png`;
+    //img.src = `/images/avatars/light_formaldress_red_brown.png`;
+    img.src = `/images/avatar/avatar${avatarIdx}.png`;
+
     img.onload = function () {
       avatarCanvas.width = img.naturalWidth / 16 + 20;
       avatarCanvas.height = img.naturalHeight + 20;
@@ -197,7 +199,7 @@ const Avatar = () => {
         );
       };
     };
-
+    
     const sendCharPos = () => {
       if (socketClient) {
         socketClient.emit("user position update", MY_AVATAR);
@@ -216,7 +218,7 @@ const Avatar = () => {
     return () => {
       window.removeEventListener("keydown", throttledKeydown);
     };
-  }, [nickname]);
+  }, [nickname, avatarIdx]);
   return (
     <>
       <div className={"avatar"}>

@@ -12,7 +12,10 @@ function JoinPage() {
   const socketClient = useSocket();
   const handleNicknameInput = (e) => {
     if (e.key === "Enter" && `${nickNameRef.current.value}`.trim().length > 0) {
-      socketClient.emit("set nickname", nickNameRef.current.value);
+      socketClient.emit("set userInfo", {
+        nickname: nickNameRef.current.value,
+        avatarIdx: avatarIdx,
+      });
     }
   };
 
@@ -20,7 +23,7 @@ function JoinPage() {
     const canvas = canvasContainer.current;
     const ctx = canvas.getContext("2d");
     const player = new Image();
-    player.src = `/images/avatar/avatar${avatarIdx + 1}.png`;
+    player.src = `/images/avatar/avatar${avatarIdx}.png`;
     ctx.clearRect(0, 0, 32, 32);
     player.onload = () => {
       ctx.drawImage(player, 0, 0, 32, 32, 0, 0, 32, 32);
