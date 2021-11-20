@@ -35,8 +35,8 @@ const initGameSocket = (io, namespace, socket) => {
       }
     }
     if(roomStore[roomId].user1.pick && roomStore[roomId].user2.pick){
-        io.to(roomStore[roomId].user1.id).emit("fight ready", { roomID: roomId, praises: getRamdomPraiseList(3, roomStore[roomId].user2.pick) });
-        io.to(roomStore[roomId].user2.id).emit("fight ready", { roomID: roomId, praises: getRamdomPraiseList(3, roomStore[roomId].user1.pick) });
+        io.to(roomStore[roomId].user1.id).emit("fight ready", { roomID: roomId, praises: getRamdomPraiseList(3, roomStore[roomId].user2.pick), other: roomStore[roomId].user2.id });
+        io.to(roomStore[roomId].user2.id).emit("fight ready", { roomID: roomId, praises: getRamdomPraiseList(3, roomStore[roomId].user1.pick), other: roomStore[roomId].user1.id});
     }
   });
 

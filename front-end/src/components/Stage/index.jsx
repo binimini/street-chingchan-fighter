@@ -1,13 +1,17 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSocket, useSocketData } from "../../context/SocketContext";
 import MessageBox from "../MessageBox";
 import SelectionList from "../../container/SelectionList";
 
 import "./style.scss";
 
+const FIGHT_READY = "fight ready";
+
 function Stage() {
   const socketClient = useSocket();
   const { userList, roomMembers, roomID, canStart, roomTime } = useSocketData();
+  const [title, setTitle] = useState('* 받고싶은 칭찬을 골라주세요 *');
+  const [content, setContent] = useState(null);
 
   const handleFightStart = () => {
     socketClient.emit("fight start", roomID);
@@ -32,6 +36,14 @@ function Stage() {
     };
   }, [gameTriggerHandler]);
 
+  useEffect(()=>{
+    if(!socketClient) return;
+    socketClient.on(FIGHT_READY, ()=>{
+      setTitle('* 상대방을 위한 칭찬을 골라주세요 *');
+      setContent("어떤 칭찬을 건내줄까요?");
+    })
+  },[socketClient])
+
   if (!socketClient) {
     return <div>loading...</div>;
   }
@@ -42,18 +54,26 @@ function Stage() {
         <div></div>
       ) : (
         <div className="room__container">
-          <div className="room__title">* 받고싶은 칭찬을 골라주세요 *</div>
+          <div className="room__title">{title}</div>
           <div className="room__content">
             <div className="message_box__container">
               <MessageBox variant="lg">
-                <p>
+                { content? <p>
                   어떤 칭찬이{" "}
                   {
                     roomMembers.filter(({ id }) => id !== socketClient.id)[0]
                       .nickname
                   }
                   님을 행복하게 만들까요?
-                </p>
+                </p> :
+                  <p>
+                  어떤 칭찬이{" "}
+                  {
+                    roomMembers.filter(({ id }) => id === socketClient.id)[0]
+                      .nickname
+                  }
+                  님을 행복하게 만들까요?
+                </p>}
                 <p>ヽ(✿ﾟ▽ﾟ)ノ</p>
               </MessageBox>
             </div>
