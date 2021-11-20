@@ -58,7 +58,7 @@ function Stage() {
               </MessageBox>
             </div>
             <div className="selection__container">
-              <SelectionList isGame={false} />
+              <SelectionList/>
             </div>
 
             {roomMembers.length > 0 &&

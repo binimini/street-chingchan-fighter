@@ -3,6 +3,8 @@ const praises = require("../constants/index");
 const PICK_PRAISE = "pick praise";
 const SEND_ANSWER = "send answer";
 const PUBLISH_RESULT = "publish result";
+const GAME_RESULT = "game result";
+const GUESS_PRAISE = "guess praise";
 
 let instance = {};
 
@@ -14,7 +16,7 @@ class RoomStore {
 }
 const INIT_PRAISE = "init praise";
 
-const initGameSocket = (namespace, socket) => {
+const initGameSocket = (io, namespace, socket) => {
   const roomStore = new RoomStore();
   socket.on(INIT_PRAISE, () => socket.emit(INIT_PRAISE, praises));
 
@@ -32,36 +34,70 @@ const initGameSocket = (namespace, socket) => {
         roomStore[roomId].user2 = { id: socket.id, pick: praiseId };
       }
     }
-    namespace.to(roomId).emit("fight ready", { roomID: roomId });
+    if(roomStore[roomId].user1.pick && roomStore[roomId].user2.pick){
+        io.to(roomStore[roomId].user1.id).emit("fight ready", { roomID: roomId, praises: getRamdomPraiseList(3, roomStore[roomId].user2.pick) });
+        io.to(roomStore[roomId].user2.id).emit("fight ready", { roomID: roomId, praises: getRamdomPraiseList(3, roomStore[roomId].user1.pick) });
+    }
   });
 
-  socket.on(SEND_ANSWER, ({ roomId, praiseId }) => {
-    sendResult(io, { roomId, praiseId });
+  socket.on(GUESS_PRAISE, ({ roomId, praiseId }) => {
+      if (roomStore[roomId].user1.id == socket.id) {
+          roomStore[roomId].user2.guess = praiseId;
+        } else {
+            roomStore[roomId].user1.guess = praiseId;
+        }
+        if (roomStore[roomId].user1.guess && roomStore[roomId].user2.guess) {
+        console.log(roomStore)
+      const user1 = roomStore[roomId].user1;
+      const user2 = roomStore[roomId].user2;
+      namespace.to(roomId).emit(GAME_RESULT, {
+        user1: {
+          id: user1.id,
+          pick: praises[user1.pick].text,
+          guess: praises[user1.guess].text,
+          result: user1.pick == user1.guess,
+        },
+        user2: {
+          id: user2.id,
+          pick: praises[user2.pick].text,
+          guess: praises[user2.guess].text,
+          result: user2.pick == user2.guess,
+        },
+      });
+    }
   });
 };
 
-const sendAnswer = (io, roomId) => {
-  const roomStore = new RoomStore();
-  const roomData = roomStore[roomId];
-  io.to(roomData.user1.id).emit(GET_ANSWER, roomData.user2.pick);
-  io.to(roomData.user2.id).emit(GET_ANSWER, roomData.user1.pick);
-};
-
-const sendResult = (io, pick) => {
-  const roomStore = new RoomStore();
-  const { roomId, praiseId } = pick;
-  const roomData = roomStore[roomId];
-  if (socket.id === roomData.user1.id) {
-    io.to(roomData.user1.id).emit(
-      PUBLISH_RESULT,
-      roomData.user2.pick === praiseId
-    );
-  } else {
-    io.to(roomData.user2.id).emit(
-      PUBLISH_RESULT,
-      roomData.user1.pick === praiseId
-    );
-  }
-};
+const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+  
+  const getAnswerIndex = (answerID) => {
+    let answerIdx = -1;
+    praises.forEach((el, idx) => {
+      if (el.id === answerID) {
+        answerIdx = idx;
+        return;
+      }
+    });
+    return answerIdx;
+  };
+  
+  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+  
+  const getRamdomPraiseList = (cnt, answerId) => {
+    const arr = [];
+    const answerIdx = getAnswerIndex(answerId);
+    while (arr.length < cnt - 1) {
+      const randInt = getRandomInt(0, praises.length);
+      if (!arr.includes(randInt) && randInt !== answerIdx) {
+        arr.push(randInt);
+      }
+    }
+    arr.push(answerIdx);
+    return shuffle(arr.map((idx) => praises[idx]));
+  };
 
 module.exports = initGameSocket;
