@@ -6,6 +6,6 @@ const Selection = ({praise, isGame}) => {
   return (
     <button onClick={isGame ? handleClick : handleClickBeforeGame}>{praise.text}</button>
   );
-}
+};
 
 export default Selection;
