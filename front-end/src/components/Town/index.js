@@ -25,10 +25,8 @@ const Town = () => {
   }
 
   useEffect(() => {
-    socketClient.on("will fight", (id) => {
-      const target = userList.find((u) => u.id === id);
-
-      if(window.confirm(`${target.nickname}님께서 칭찬 배틀을 신청하셨습니다. 수락하시겠습니까?`)) {
+    socketClient.on("will fight", (id, nickname) => {
+      if(window.confirm(`${nickname}님께서 칭찬 배틀을 신청하셨습니다. 수락하시겠습니까?`)) {
         socketClient.emit("init fight", id);
       }
       else {

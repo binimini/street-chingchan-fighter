@@ -50,7 +50,7 @@ const initSocket = (httpServer) => {
     });
 
     socket.on("apply fight", (enemyID) => {
-      socket.to(enemyID).emit("will fight", socket.id);
+      socket.to(enemyID).emit("will fight", socket.id, socket.nickname);
     });
 
     socket.on("reject fight", (id) => {
