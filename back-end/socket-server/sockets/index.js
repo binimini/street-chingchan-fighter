@@ -23,6 +23,7 @@ const initSocket = (httpServer) => {
       x: s._position.x,
       y: s._position.y,
       nickname: s.nickname,
+      avatarIdx: s.avatarIdx
     }));
   };
 
@@ -32,9 +33,10 @@ const initSocket = (httpServer) => {
     initTimerSocket(namespace, socket);
     socket._position = { x: 0, y: 0 };
 
-    socket.on("set nickname", (nickname) => {
-      socket.nickname = nickname;
-      socket.emit("set nickname fulfilled", nickname);
+    socket.on("set userInfo", (userInfo) => {
+      socket.nickname = userInfo.nickname;
+      socket.avatarIdx = userInfo.avatarIdx;
+      socket.emit("set userInfo fulfilled", userInfo);
     });
 
     socket.on("user position update", async ({ x, y }) => {
