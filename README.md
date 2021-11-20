@@ -4,8 +4,6 @@
 
 ---
 
-### ❣ [배포 링크](http://118.67.134.87/)
-
 #### 💕 [발표 PPT](https://drive.google.com/file/d/1ZVJdyxg6cBHVXHl68QqzTqxUDrP02mH2/view?usp=sharing) 
 
 #### 💖 [디자인](https://www.figma.com/file/1bEDvD5PXRpJ02BggIs0gH/Untitled?node-id=0%3A1)
