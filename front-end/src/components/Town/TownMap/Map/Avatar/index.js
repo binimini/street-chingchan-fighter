@@ -129,8 +129,8 @@ const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
     container.scroll(container.scrollLeft, container.scrollTop - STRIDE);
   }
 
-  // MY_AVATAR.avatarSrcPosition = avatarSrcPosition;
-  // sendCharPos(MY_AVATAR);
+  MY_AVATAR.avatarSrcPosition = avatarSrcPosition;
+  sendCharPos(MY_AVATAR);
 };
 
 const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
@@ -163,8 +163,10 @@ const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
 const Avatar = () => {
   const { nickname, avatarIdx } = useSocketData();
   const socketClient = useSocket();
+
   useEffect(() => {
-    const avatarCanvas = document.getElementById("test-id");
+    if(!socketClient) return;
+    const avatarCanvas = document.getElementById('#my-avatar');
     const ctx = avatarCanvas.getContext("2d");
     const img = new Image();
 
@@ -197,17 +199,15 @@ const Avatar = () => {
         );
       };
     };
-
-    const sendCharPos = () => { };
+    
+    const sendCharPos = () => {
+      if (socketClient) {
+        socketClient.emit("user position update", MY_AVATAR);
+      }
+    };
 
     const keyDownEventListener = (event) => {
       keyDownHandler(event, avatarCanvas, ctx, img, main_map_arr, sendCharPos);
-      if (socketClient) {
-        socketClient.emit("user position update", {
-          x: MY_AVATAR.x,
-          y: MY_AVATAR.y,
-        });
-      }
     };
 
     const throttledKeydown = throttle(keyDownEventListener, 75);
@@ -222,7 +222,7 @@ const Avatar = () => {
   return (
     <>
       <div className={"avatar"}>
-        <canvas id="test-id"></canvas>
+        <canvas id='#my-avatar'></canvas>
         <p>{nickname}</p>
       </div>
     </>
