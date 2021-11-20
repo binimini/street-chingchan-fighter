@@ -7,9 +7,7 @@ const Selection = ({ praise, isGame }) => {
   return (
     <button
       className="selectionWrapper"
-      onClick={
-        isGame ? () => handleClick(praise) : () => handleClickBeforeGame(praise)
-      }
+      onClick={isGame ? () => handleClick : () => handleClickBeforeGame}
     >
       <div className="selectionText">{praise.text}</div>
     </button>
