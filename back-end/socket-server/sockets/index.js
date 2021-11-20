@@ -15,7 +15,7 @@ const initSocket = (httpServer) => {
   const namespace = io.of("/");
   namespace.on("connection", (socket) => {
     initChatSocket(namespace, socket);
-    initGameSocket(namespace, socket);
+    initGameSocket(io, socket);
     initTimerSocket(namespace, socket);
 
     socket.on("init fight", async (enemyID) => {
