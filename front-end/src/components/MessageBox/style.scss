@@ -1,0 +1,18 @@
+.message_box__root {
+  background: rgba(255, 255, 255, 0.4);
+  border: 3px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 10px;
+
+  text-align: center;
+  color: #ff8585;
+  font-family: Jua;
+  font-style: normal;
+  font-weight: normal;
+  &.message_box__root--md {
+    width: 850px;
+    padding: 20px;
+    font-size: 30px;
+    line-height: 37px;
+  }
+}

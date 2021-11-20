@@ -1,14 +1,10 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useSocket, useSocketData } from "../../context/SocketContext";
+import "./style.scss";
 
 function Stage() {
   const socketClient = useSocket();
   const { userList, roomMembers, roomID, canStart, roomTime } = useSocketData();
-  useEffect(() => {
-    if (socketClient) {
-      socketClient.emit("hello");
-    }
-  }, [socketClient]);
 
   const initFight = (id) => {
     socketClient.emit("init fight", id);
@@ -18,12 +14,50 @@ function Stage() {
     socketClient.emit("fight start", roomID);
   };
 
+  const gameTriggerHandler = useCallback(
+    (e) => {
+      if (e.key === " ") {
+        console.log("start");
+        const [target] = userList.filter((u) => u.id !== socketClient.id);
+        socketClient.emit("init fight", target.id);
+      }
+    },
+    [socketClient, userList]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", gameTriggerHandler);
+
+    return () => {
+      window.removeEventListener("keydown", gameTriggerHandler);
+    };
+  }, [gameTriggerHandler]);
+
   if (!socketClient) {
     return <div>loading...</div>;
   }
+
   return (
     <>
-      {userList.map(([id]) => (
+      {!roomID ? (
+        <div></div>
+      ) : (
+        <div className="room__container">
+          {roomMembers.length > 0 &&
+            roomMembers.map((id) => <div key={id}>{id}</div>)}
+
+          <button
+            className="room__start_btn"
+            disabled={!canStart}
+            onClick={handleFightStart}
+          >
+            Start
+          </button>
+          <div>시간 : {roomTime}</div>
+          <div>room# : {roomID}</div>
+        </div>
+      )}
+      {/* {userList.map(({ id }) => (
         <div
           key={id}
           className={id === socketClient.id ? "me" : ""}
@@ -35,26 +69,7 @@ function Stage() {
         >
           {id}
         </div>
-      ))}
-      <div
-        className="room__container"
-        style={{
-          width: "500px",
-        }}
-      >
-        {roomMembers.length > 0 &&
-          roomMembers.map((id) => <div key={id}>{id}</div>)}
-
-        <button
-          className="room__start_btn"
-          disabled={!canStart}
-          onClick={handleFightStart}
-        >
-          Start
-        </button>
-        <div>시간 : {roomTime}</div>
-        <div>room# : {roomID}</div>
-      </div>
+      ))} */}
     </>
   );
 }

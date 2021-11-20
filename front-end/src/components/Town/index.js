@@ -1,12 +1,14 @@
-import ChatContainer from "../ChatContainer";
-import Stage from "../Stage";
+import TownMap from "./TownMap";
+
+import "./style.scss";
 
 const Town = () => {
   return (
-    <div>
-      <ChatContainer />
-      <Stage />
-    </div>
+    <>
+      <div className={"town-map"}>
+        <TownMap />
+      </div>
+    </>
   );
 };
 

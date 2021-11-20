@@ -1,5 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
 
+.chat__container__root {
+  display: flex;
+  background-color: transparent;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
 .chatContainerWrapper {
   display: flex;
   font-family: "Do Hyeon";
@@ -9,6 +18,9 @@
   height: 90vh;
   background: #ffb8b8;
   border-radius: 0px 30px 30px 0px;
+  margin: 0;
+  z-index: 2;
+  position: absolute;
 }
 
 .chatContainerScroll {
@@ -47,4 +59,19 @@ input {
   &:focus {
     outline: none;
   }
+}
+.sidebar-hidden {
+  display: none;
+}
+
+.sidebar__unfolded {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  background-color: #ffb8b8;
+  z-index: 2;
+  cursor: pointer;
 }

@@ -1,0 +1,15 @@
+.avatar {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  text-align: center;
+
+  p {
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 3px;
+    font-size: 10px;
+    color: white;
+    padding: 0 1px;
+  }
+}

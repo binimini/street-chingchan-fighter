@@ -2,16 +2,15 @@ const PICK_PRAISE = 'pick praise';
 const SEND_ANSWER = 'send answer';
 const GET_ANSWER = 'get answer';
 const PUBLISH_RESULT = 'publish result';
-const FINISH = 'finish';
 
 const tempId = 'abc';
 
 let instance = {};
 class RoomStore {
-    constructor() {
-        if(instance) return instance;
-        instance = this;
-    }
+  constructor() {
+    if (instance) return instance;
+    instance = this;
+  }
 }
 
 const initGameSocket = (io, socket) => {

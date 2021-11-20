@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useSocket } from "../../context/SocketContext";
+import { useSocket, useSocketData } from "../../context/SocketContext";
 import Chat from "../Chat";
+import Stage from "../Stage";
 import "./style.scss";
 
 function ChatContainer() {
   const socketClient = useSocket();
+  const { nickname } = useSocketData();
   const scrollRef = useRef();
   const [chats, setChats] = useState([]);
   const [input, setInput] = useState("");
@@ -13,11 +15,11 @@ function ChatContainer() {
     (event) => {
       if (!socketClient) return;
       if (event.key !== "Enter") return;
-      socketClient.emit("chat", { userName: "test", msg: input });
+      socketClient.emit("chat", { userName: nickname, msg: input });
       setInput("");
       event.preventDefault();
     },
-    [input, socketClient]
+    [input, nickname, socketClient]
   );
 
   useEffect(() => {
@@ -31,22 +33,50 @@ function ChatContainer() {
     };
   }, [socketClient]);
 
-  useEffect(() => console.log(input), [input]);
+  const chatUnfold = useRef();
+  const chatFold = useRef();
+
+  const chatFoldFunction = (e) => {
+    chatUnfold.current.className = "sidebar-hidden";
+    chatFold.current.className = "chatContainerWrapper";
+  };
+
+  const chatUnfoldFunction = (e) => {
+    chatUnfold.current.className = "sidebar__unfolded";
+    chatFold.current.className = "sidebar-hidden";
+  };
 
   return (
-    <div className="chatContainerWrapper">
-      <div className="chatContainerText">* Chat</div>
-      <div className="chatContainerScroll" ref={scrollRef}>
-        {chats.map(({ userName, msg }, idx) => (
-          <Chat key={idx} userName={userName} msg={msg} />
-        ))}
+    <div className="chat__container__root">
+      <div
+        className="sidebar__unfolded"
+        ref={chatUnfold}
+        onClick={chatFoldFunction}
+      >
+        채팅
       </div>
-      <input
-        className="chatInput"
-        onChange={({ target }) => setInput(target.value)}
-        onKeyPress={handleKeyPress}
-        value={input}
-      />
+      <div
+        className="sidebar-hidden"
+        ref={chatFold}
+        onClick={chatUnfoldFunction}
+      >
+        <div className="chatContainerText">* Chat</div>
+        <div className="chatContainerScroll" ref={scrollRef}>
+          {chats.map(({ userName, msg }, idx) => (
+            <Chat key={idx} userName={userName} msg={msg} />
+          ))}
+        </div>
+        <input
+          className="chatInput"
+          onChange={({ target }) => setInput(target.value)}
+          onKeyPress={handleKeyPress}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          value={input}
+        />
+      </div>
+      <Stage />
     </div>
   );
 }
