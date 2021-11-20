@@ -13,14 +13,14 @@ class RoomStore {
 const initGameSocket = (namespace, socket) => {
   const roomStore = new RoomStore();
   socket.on(PICK_PRAISE, (pick) => {
-    const { roomId, socketId, praiseId } = pick;
+    const { roomId, praiseId } = pick;
     if (!roomStore[roomId]) {
       roomStore[roomId] = {
-        user1: { id: socketId, pick: praiseId },
+        user1: { id: socket.id, pick: praiseId },
         user2: "",
       };
     } else {
-      roomStore[roomId].user2 = { id: socketId, pick: praiseId };
+      roomStore[roomId].user2 = { id: socket.id, pick: praiseId };
     }
     // console.log(roomStore);
   });
@@ -32,9 +32,9 @@ const initGameSocket = (namespace, socket) => {
 
 const sendResult = (socket, pick) => {
   const roomStore = new RoomStore();
-  const { roomId, socketId, praiseId } = pick;
+  const { roomId, praiseId } = pick;
   const roomData = roomStore[roomId];
-  if (socketId === roomData.user1) {
+  if (socket.id === roomData.user1.id) {
     socket.emit(PUBLISH_RESULT, roomData.user2.pick === praiseId);
   } else {
     socket.emit(PUBLISH_RESULT, roomData.user1.pick === praiseId);
