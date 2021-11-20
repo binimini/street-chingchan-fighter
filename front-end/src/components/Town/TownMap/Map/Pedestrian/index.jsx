@@ -6,8 +6,6 @@ function Pedestrian({ id, nickname, avatarIdx, avatarSrcPosition, x, y }) {
   const socketClient = useSocket();
   const canvasRef = useRef();
 
-  console.log(x, y, nickname);
-
   useEffect(() => {
     if (!nickname) return;
 
