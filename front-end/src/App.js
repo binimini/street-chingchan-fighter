@@ -9,10 +9,18 @@ const App = () => {
   const { nickname } = useSocketData();
   return (
     <div className="App">
-      {!nickname ? <JoinPage /> : <><ChatContainer />
-        <Town />
-        <SelectionList isGame={false}/>
-      </>}
+      <div className="appbar">
+        <img src="/logo.png" alt="" />
+      </div>
+      {!nickname ? (
+        <JoinPage />
+      ) : (
+        <>
+          <ChatContainer />
+          <Town />
+          <SelectionList isGame={false} />
+        </>
+      )}
     </div>
   );
 };

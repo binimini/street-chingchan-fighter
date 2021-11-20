@@ -59,3 +59,13 @@
 .room__start_btn:disabled {
   background-color: #ffb8b8;
 }
+.appbar {
+  height: 120px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: white;
+  padding-left: 40px;
+}
