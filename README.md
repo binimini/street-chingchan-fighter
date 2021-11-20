@@ -4,8 +4,6 @@
 
 ---
 
-#### 💕 [발표 PPT](https://drive.google.com/file/d/1ZVJdyxg6cBHVXHl68QqzTqxUDrP02mH2/view?usp=sharing) 
-
 #### 💖 [디자인](https://www.figma.com/file/1bEDvD5PXRpJ02BggIs0gH/Untitled?node-id=0%3A1)
 
 
@@ -20,18 +18,15 @@
 
 😇전부를 걸고 사랑하는 너에게 칭찬 배틀을 신청한다!!😇
 
-(* 이 프로젝트는 [DND 언택트 해커톤 출품작](https://dnd.ac/) 입니다.)
 
 
 
 ## 🌷 팀원 소개
 
-### [7조]정빈이 생일은 11월 19일
 |[김현조](https://github.com/Kim-Hyunjo)|[민수빈](https://github.com/binimini)|[전용후](https://github.com/jyh0521)|[채호경](https://github.com/24to26)|[한찬호](https://github.com/ChanHoHan)|[황정빈](https://github.com/jeongbbn)
 |------|------|------|------|------|------|
 |<img src="https://github.com/Kim-Hyunjo.png" width="80">|<img src="https://github.com/binimini.png" width="80">|<img src="https://github.com/jyh0521.png" width="80"> |<img src="https://github.com/24to26.png" width="80">|<img src="https://github.com/ChanHoHan.png" width="80">|<img src="https://github.com/jeongbbn.png" width="80">|
 |@Kim-Hyunjo|@binimini|@jyh0521|@24to26|@ChanHoHan|@jeongbbn|
-
 
 
 ## 🌻 기술 스택
