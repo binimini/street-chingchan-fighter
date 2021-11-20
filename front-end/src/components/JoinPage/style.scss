@@ -24,12 +24,34 @@
   .join__page__content {
     flex: 1;
     text-align: center;
+
     .message__box__container {
       margin: 50px auto;
-
       display: flex;
       justify-content: center;
     }
+
+    .join__image__container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0px auto;
+
+      .join__image__arrow {
+        color: #ff8585;
+        font-size: 50px;
+        cursor: pointer;
+      }
+      .join__image {
+        border: 3px solid #ffffff;
+        box-sizing: border-box;
+        border-radius: 10px;
+        padding: 50px;
+        background: rgba(255, 255, 255, 0.4);
+        margin: 60px 80px;
+      }
+    }
+
     .input__container {
       position: relative;
       width: 750px;
