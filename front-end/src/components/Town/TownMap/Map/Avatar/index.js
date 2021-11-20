@@ -1,82 +1,33 @@
 import { useEffect } from "react";
 import { useSocket, useSocketData } from "../../../../../context/SocketContext";
+import { drawAvatar } from "../../../utils";
+import * as TOWN from '../../../../../constants/index';
 
 import "./style.scss";
 
-const makeMapArray = (width, height) => {
-  return Array(height)
-    .fill(0)
-    .map((_, row_idx, row_arr) =>
-      Array(width)
-        .fill(1)
-        .map((_, col_idx, col_arr) => {
-          if (
-            row_idx === 0 ||
-            row_idx === row_arr.length - 1 ||
-            col_idx === 0 ||
-            col_idx === col_arr.length - 1
-          )
-            return 1;
-          return 0;
-        })
-    );
-};
-
-const main_map_arr = makeMapArray(2448, 2144);
-
-const MY_AVATAR = {
-  x: 0,
-  y: 0,
-  avatarSrcPosition: 0,
-};
-
-const LEFT_POS = 128;
-const RIGHT_POS = 320;
-const UP_POS = 224;
-const DOWN_POS = 32;
-const NEXT_POS = 32;
-const STRIDE = 52;
-
-let avatarSrcPosition = 0;
-
-const drawAvatar = (ctx, img, src_x_pos, width, height) => {
-  ctx.clearRect(0, 0, width, height);
-  ctx.drawImage(
-    img,
-    src_x_pos,
-    0,
-    img.naturalWidth / 16,
-    img.naturalHeight,
-    0,
-    0,
-    width,
-    height
-  );
-};
-
-const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
-  const [beforeX, beforeY] = [MY_AVATAR.x, MY_AVATAR.y];
+const keyDownHandler = (event, canvas, ctx, img, MAP, sendCharPos) => {
+  const [beforeX, beforeY, beforeSrc] = [TOWN.MY_AVATAR.x, TOWN.MY_AVATAR.y, TOWN.MY_AVATAR.avatarSrcPosition];
 
   switch (event.key) {
     case "ArrowLeft":
-      MY_AVATAR.x -= STRIDE;
-      avatarSrcPosition =
-        avatarSrcPosition === LEFT_POS ? LEFT_POS + NEXT_POS : LEFT_POS;
+      TOWN.MY_AVATAR.x -= TOWN.STRIDE;
+      TOWN.MY_AVATAR.avatarSrcPosition = 
+      TOWN.MY_AVATAR.avatarSrcPosition === TOWN.LEFT_POS ? TOWN.LEFT_POS + TOWN.NEXT_POS : TOWN.LEFT_POS;
       break;
     case "ArrowUp":
-      MY_AVATAR.y -= STRIDE;
-      avatarSrcPosition =
-        avatarSrcPosition === UP_POS ? UP_POS + NEXT_POS : UP_POS;
+      TOWN.MY_AVATAR.y -= TOWN.STRIDE;
+      TOWN.MY_AVATAR.avatarSrcPosition =
+      TOWN.MY_AVATAR.avatarSrcPosition === TOWN.UP_POS ? TOWN.UP_POS + TOWN.NEXT_POS : TOWN.UP_POS;
       break;
     case "ArrowRight":
-      MY_AVATAR.x += STRIDE;
-      avatarSrcPosition =
-        avatarSrcPosition !== RIGHT_POS ? RIGHT_POS : RIGHT_POS + NEXT_POS;
+      TOWN.MY_AVATAR.x += TOWN.STRIDE;
+      TOWN.MY_AVATAR.avatarSrcPosition =
+      TOWN.MY_AVATAR.avatarSrcPosition !== TOWN.RIGHT_POS ? TOWN.RIGHT_POS : TOWN.RIGHT_POS + TOWN.NEXT_POS;
       break;
     case "ArrowDown":
-      MY_AVATAR.y += STRIDE;
-      avatarSrcPosition =
-        avatarSrcPosition !== DOWN_POS ? DOWN_POS : DOWN_POS + NEXT_POS;
+      TOWN.MY_AVATAR.y += TOWN.STRIDE;
+      TOWN.MY_AVATAR.avatarSrcPosition =
+      TOWN.MY_AVATAR.avatarSrcPosition !== TOWN.DOWN_POS ? TOWN.DOWN_POS : TOWN.DOWN_POS + TOWN.NEXT_POS;
       break;
     default:
       break;
@@ -84,22 +35,22 @@ const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
 
   if (
     !avatarConflictCheck(
-      main_map_arr,
+      MAP,
       beforeX,
       beforeY,
-      MY_AVATAR.x,
-      MY_AVATAR.y
+      TOWN.MY_AVATAR.x,
+      TOWN.MY_AVATAR.y
     )
   ) {
-    [MY_AVATAR.x, MY_AVATAR.y] = [beforeX, beforeY];
+    [TOWN.MY_AVATAR.x,TOWN.MY_AVATAR.y, TOWN.MY_AVATAR.avatarSrcPosition] = [beforeX, beforeY, beforeSrc];
     return;
   }
 
   canvas.closest(
     "div"
-  ).style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
+  ).style.transform = `translate(${TOWN.MY_AVATAR.x}px,${TOWN.MY_AVATAR.y}px)`;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawAvatar(ctx, img, avatarSrcPosition, canvas.width, canvas.height);
+  drawAvatar(ctx, img, TOWN.MY_AVATAR.avatarSrcPosition, canvas.width, canvas.height);
 
   const user_window_middle_width = window.innerWidth / 2;
   const user_window_middle_height = window.innerHeight / 2;
@@ -111,29 +62,28 @@ const keyDownHandler = (event, canvas, ctx, img, main_map_arr, sendCharPos) => {
     avatar_window_left >= user_window_middle_width &&
     event.key === "ArrowRight"
   ) {
-    container.scroll(container.scrollLeft + STRIDE, container.scrollTop);
+    container.scroll(container.scrollLeft + TOWN.STRIDE, container.scrollTop);
   } else if (
     avatar_window_top >= user_window_middle_height &&
     event.key === "ArrowDown"
   ) {
-    container.scroll(container.scrollLeft, container.scrollTop + STRIDE);
+    container.scroll(container.scrollLeft, container.scrollTop + TOWN.STRIDE);
   } else if (
     avatar_window_left < user_window_middle_width &&
     event.key === "ArrowLeft"
   ) {
-    container.scroll(container.scrollLeft - STRIDE, container.scrollTop);
+    container.scroll(container.scrollLeft - TOWN.STRIDE, container.scrollTop);
   } else if (
     avatar_window_top < user_window_middle_height &&
     event.key === "ArrowUp"
   ) {
-    container.scroll(container.scrollLeft, container.scrollTop - STRIDE);
+    container.scroll(container.scrollLeft, container.scrollTop - TOWN.STRIDE);
   }
 
-  MY_AVATAR.avatarSrcPosition = avatarSrcPosition;
-  sendCharPos(MY_AVATAR);
+  sendCharPos(TOWN.MY_AVATAR);
 };
 
-const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
+const avatarConflictCheck = (MAP, sX, sY, dX, dY) => {
   let tmpsX = sX < dX ? sX : dX;
   let tmpdX = sX > dX ? sX : dX;
   let tmpsY = sY < dY ? sY : dY;
@@ -142,16 +92,16 @@ const avatarConflictCheck = (main_map_arr, sX, sY, dX, dY) => {
   if (
     !(
       0 <= tmpdX &&
-      tmpdX < main_map_arr[0].length &&
+      tmpdX < MAP[0].length &&
       0 <= tmpdY &&
-      tmpdY < main_map_arr.length
+      tmpdY < MAP.length
     )
   )
     return false;
 
   for (let i = tmpsX; i < tmpdX; i++) {
     for (let j = tmpsY; j < tmpdY; j++) {
-      if (main_map_arr[i][j] !== 0) {
+      if (MAP[i][j] !== 0) {
         return false;
       }
     }
@@ -170,20 +120,16 @@ const Avatar = () => {
     const ctx = avatarCanvas.getContext("2d");
     const img = new Image();
 
-    //img.src = `/images/avatars/light_formaldress_red_brown.png`;
     img.src = `/images/avatar/avatar${avatarIdx}.png`;
-
     img.onload = function () {
       avatarCanvas.width = img.naturalWidth / 16 + 20;
       avatarCanvas.height = img.naturalHeight + 20;
 
       avatarCanvas.closest(
         "div"
-      ).style.transform = `translate(${MY_AVATAR.x}px,${MY_AVATAR.y}px)`;
-      drawAvatar(ctx, img, 0, avatarCanvas.width, avatarCanvas.height);
+      ).style.transform = `translate(${TOWN.MY_AVATAR.x}px,${TOWN.MY_AVATAR.y}px)`;
+      drawAvatar(ctx, img, TOWN.MY_AVATAR.avatarSrcPosition, avatarCanvas.width, avatarCanvas.height);
     };
-
-    //img.src = `/images/avatars/${AVATAR_IMAGES[+avater_index]}`;
 
     const throttle = (callback, delay) => {
       let timerId;
@@ -202,12 +148,12 @@ const Avatar = () => {
     
     const sendCharPos = () => {
       if (socketClient) {
-        socketClient.emit("user position update", MY_AVATAR);
+        socketClient.emit("user position update", TOWN.MY_AVATAR);
       }
     };
 
     const keyDownEventListener = (event) => {
-      keyDownHandler(event, avatarCanvas, ctx, img, main_map_arr, sendCharPos);
+      keyDownHandler(event, avatarCanvas, ctx, img, TOWN.MAP, sendCharPos);
     };
 
     const throttledKeydown = throttle(keyDownEventListener, 75);
