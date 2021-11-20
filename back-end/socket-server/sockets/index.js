@@ -24,7 +24,7 @@ const initSocket = (httpServer) => {
       y: s._position.y,
       nickname: s.nickname,
       avatarSrcPosition: s._position.avatarSrcPosition,
-      avatarIdx: s.avatarIdx
+      avatarIdx: s.avatarIdx,
     }));
   };
 
@@ -57,7 +57,17 @@ const initSocket = (httpServer) => {
       socketList.find((s) => s.id === enemyID).join(roomID);
 
       namespace.to(roomID).emit("room created", {
-        members: [...namespace.adapter.rooms.get(roomID)],
+        members: socketList
+          .filter((s) =>
+            [...namespace.adapter.rooms.get(roomID)].includes(s.id)
+          )
+          .map((s) => ({
+            id: s.id,
+            x: s._position.x,
+            y: s._position.y,
+            nickname: s.nickname,
+            avatarIdx: s.avatarIdx,
+          })),
         roomID,
       });
     });
@@ -71,4 +81,3 @@ const initSocket = (httpServer) => {
 };
 
 module.exports = initSocket;
-
