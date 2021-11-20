@@ -55,7 +55,7 @@ function ChatContainer() {
         ref={chatUnfold}
         onClick={chatFoldFunction}
       >
-        채팅
+        ♥채팅♥
       </div>
       <div
         className="sidebar-hidden"
