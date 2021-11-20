@@ -67,5 +67,9 @@
   z-index: 1;
   width: 100%;
   background-color: white;
-  padding-left: 40px;
+}
+.appbar img {
+  position: absolute;
+  top: 0;
+  left: 40px;
 }
