@@ -4,6 +4,8 @@ import Chat from "../Chat";
 import Stage from "../Stage";
 import "./style.scss";
 
+import Town from "../Town";
+
 function ChatContainer() {
   const socketClient = useSocket();
   const { nickname } = useSocketData();
@@ -76,6 +78,7 @@ function ChatContainer() {
           value={input}
         />
       </div>
+      <Town />
       <Stage />
     </div>
   );

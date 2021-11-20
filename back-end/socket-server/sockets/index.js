@@ -49,6 +49,14 @@ const initSocket = (httpServer) => {
       namespace.emit("user list", await updateUserList());
     });
 
+    socket.on("apply fight", (enemyID) => {
+      socket.to(enemyID).emit("will fight", socket.id);
+    });
+
+    socket.on("reject fight", (id) => {
+      socket.to(id).emit("reject your fight", socket.nickname);
+    });
+
     socket.on("init fight", async (enemyID) => {
       const roomID = randomUUID();
       const socketList = await namespace.fetchSockets();
