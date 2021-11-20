@@ -23,7 +23,7 @@ const initSocket = (httpServer) => {
       x: s._position.x,
       y: s._position.y,
       nickname: s.nickname,
-      avatarSrcPosition: s._position.avatarSrcPosition
+      avatarSrcPosition: s._position.avatarSrcPosition,
       avatarIdx: s.avatarIdx
     }));
   };
@@ -32,12 +32,13 @@ const initSocket = (httpServer) => {
     initChatSocket(namespace, socket);
     initGameSocket(namespace, socket);
     initTimerSocket(namespace, socket);
-    socket._position = { x: 0, y: 0, avatarSrcPosition: 0 };
+    socket._position = { x: 100, y: 0, avatarSrcPosition: 0 };
 
-    socket.on("set userInfo", (userInfo) => {
+    socket.on("set userInfo", async (userInfo) => {
       socket.nickname = userInfo.nickname;
       socket.avatarIdx = userInfo.avatarIdx;
       socket.emit("set userInfo fulfilled", userInfo);
+      namespace.emit("user list", await updateUserList());
     });
 
     socket.on("user position update", async ({ x, y, avatarSrcPosition }) => {

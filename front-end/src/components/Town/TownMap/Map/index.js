@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSocket, useSocketData } from "../../../../context/SocketContext";
+import { drawAvatar } from "../../utils";
 import Avatar from "./Avatar";
 
 import "./style.scss";
@@ -7,30 +8,14 @@ import "./style.scss";
 const drawMap = () => {
   const mapCanvas = document.getElementById("map-canvas");
   const ctx = mapCanvas.getContext("2d");
-
   const img = new Image();
+  
+  img.src = '/images/map/map.png';
   img.onload = function () {
     mapCanvas.width = img.naturalWidth;
     mapCanvas.height = img.naturalHeight;
     ctx.drawImage(img, 0, 0);
   };
-
-  img.src = "/images/map/map.png";
-};
-
-const drawAvatar = (ctx, img, src_x_pos, width, height) => {
-  ctx.clearRect(0, 0, width, height);
-  ctx.drawImage(
-    img,
-    src_x_pos,
-    0,
-    img.naturalWidth / 16,
-    img.naturalHeight,
-    0,
-    0,
-    width,
-    height
-  );
 };
 
 const Map = () => {
@@ -52,7 +37,7 @@ const Map = () => {
       const ctx = avatarCanvas.getContext('2d');
       const img = new Image();
 
-      img.src = `/images/avatars/light_formaldress_red_brown.png`;
+      img.src = `/images/avatar/avatar${u.avatarIdx}.png`;
       img.onload = () => {
         avatarCanvas.width = img.naturalWidth / 16 + 20;
         avatarCanvas.height = img.naturalHeight + 20;
