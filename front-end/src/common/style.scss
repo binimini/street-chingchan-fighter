@@ -1,0 +1,24 @@
+.fancy__scroll--pink {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 133, 133, 0.3);
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #ff8585;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #ff6c6c;
+  }
+}

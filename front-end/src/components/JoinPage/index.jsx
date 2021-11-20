@@ -10,13 +10,13 @@ function JoinPage() {
   const MAX_AVATARIDX = 5;
 
   const socketClient = useSocket();
-  const handleNicknameInput = (e) => {
-    if (e.key === "Enter" && `${nickNameRef.current.value}`.trim().length > 0) {
+  const clickJoinButton = (e) => {
+    if (`${nickNameRef.current.value}`.trim().length > 0) {
       socketClient.emit("set userInfo", {
         nickname: nickNameRef.current.value,
         avatarIdx: avatarIdx,
       });
-    }
+    } else alert("닉네임을 입력해주세요 ヽ(*。>Д<)o゜");
   };
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function JoinPage() {
   return (
     <div className="join__page--bg">
       <div className="join__page__appbar">* 스트릿 칭찬 파이터 *</div>
-      <div className="join__page__content">
+      <div className="join__page__content fancy__scroll--pink">
         <div className="message__box__container">
           <MessageBox variant="md">
             <p>스트릿 칭찬 파이터님!</p>
@@ -67,10 +67,15 @@ function JoinPage() {
             className="nickname__input"
             type="text"
             placeholder="닉네임을 입력해주세요."
-            onKeyDown={handleNicknameInput}
             ref={nickNameRef}
           />
         </div>
+        <div className="join__button">
+          <div className="join__button__text" onClick={clickJoinButton}>
+            배틀장 입장
+          </div>
+        </div>
+        <footer className="join__footer"></footer>
       </div>
     </div>
   );
