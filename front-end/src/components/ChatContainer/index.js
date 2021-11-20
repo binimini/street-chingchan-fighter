@@ -9,6 +9,17 @@ function ChatContainer() {
   const scrollRef = useRef();
   const [chats, setChats] = useState([]);
   const [input, setInput] = useState("");
+  const [fight, setFight] = useState("notFight");
+
+  const smallChatState = {
+    fight: "sidebar-hidden",
+    notFight: "",
+  };
+
+  const bigChatState = {
+    fight: "",
+    notFight: "sidebar-hidden",
+  };
 
   const handleKeyPress = useCallback(
     (event) => {
@@ -27,8 +38,20 @@ function ChatContainer() {
       setChats((prev) => [...prev, chat]);
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     });
+    //싸움이 시작 된 경우 (이벤트 이름 아직 )
+    /*
+    socketClient.on("fight started", () => {
+      setFight("fight");
+    });*/
+    //싸움이 끝난 경우 (이벤트 이름 아직 )
+    /*
+    socketClient.on("fight ended", () => {
+      setFight("notFight");
+    });*/
     return () => {
       socketClient.off("publish chat");
+      //싸움이 시작 된 경우 (이벤트 이름 아직 ) >> socketClient.off("fight started")
+      //싸움이 끝난 경우 (이벤트 이름 아직 ) >> socketClient.off("fight ended")
     };
   }, [socketClient]);
 
@@ -41,6 +64,9 @@ function ChatContainer() {
   };
 
   const chatUnfoldFunction = (e) => {
+    if (fight === "fight") {
+      return;
+    }
     chatUnfold.current.className = "sidebar__unfolded";
     chatFold.current.className = "sidebar-hidden";
   };
@@ -48,14 +74,14 @@ function ChatContainer() {
   return (
     <>
       <div
-        className="sidebar__unfolded"
+        className={"sidebar__unfolded " + smallChatState.fight}
         ref={chatUnfold}
         onClick={chatFoldFunction}
       >
         채팅
       </div>
       <div
-        className="sidebar-hidden"
+        className={"sidebar-hidden " + bigChatState.fight}
         ref={chatFold}
         onClick={chatUnfoldFunction}
       >
