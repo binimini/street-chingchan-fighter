@@ -42,6 +42,9 @@ function SocketProvider({ children }) {
         setCanStart(true);
         setRoomTime(0);
       });
+      socketClient.on("fight ready", ({ roomID }) => {
+        socketClient.emit("fight start", roomID);
+      });
       socketClient.on("fight started", () => {
         setCanStart(false);
       });

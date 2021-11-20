@@ -26,9 +26,13 @@ const initGameSocket = (namespace, socket) => {
         user2: "",
       };
     } else {
-      roomStore[roomId].user2 = { id: socket.id, pick: praiseId };
+      if (roomStore[roomId].user1.id == socket.id) {
+        roomStore[roomId].user1.pick = praiseId;
+      } else {
+        roomStore[roomId].user2 = { id: socket.id, pick: praiseId };
+      }
     }
-    console.log(roomStore);
+    namespace.to(roomId).emit("fight ready", { roomID: roomId });
   });
 
   socket.on(SEND_ANSWER, ({ roomId, praiseId }) => {
