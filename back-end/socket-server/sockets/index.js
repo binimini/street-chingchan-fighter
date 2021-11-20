@@ -30,7 +30,7 @@ const initSocket = (httpServer) => {
 
   namespace.on("connection", async (socket) => {
     initChatSocket(namespace, socket);
-    initGameSocket(namespace, socket);
+    initGameSocket(io, namespace, socket);
     initTimerSocket(namespace, socket);
     socket._position = { x: 100, y: 120, avatarSrcPosition: 0 };
 

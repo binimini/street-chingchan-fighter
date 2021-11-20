@@ -2,6 +2,8 @@ import { useSocket, useSocketData } from "../../context/SocketContext";
 
 const PICK_PRAISE = "pick praise";
 const SEND_ANSWER = "send answer";
+const GAME_RESULT = "game result";
+const GUESS_PRAISE = "guess praise";
 
 const useSelection = (praise) => {
   const socketClient = useSocket();
@@ -17,7 +19,7 @@ const useSelection = (praise) => {
   };
   const handleClick = () => {
     if (socketClient) {
-      socketClient.emit(SEND_ANSWER, {
+      socketClient.emit(GUESS_PRAISE, {
         roomId: roomID,
         praiseId: praise.id,
       });

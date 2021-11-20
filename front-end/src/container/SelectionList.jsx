@@ -5,40 +5,11 @@ import { praiseList } from "../dummy.json";
 
 const GET_ANSWER = "get answer";
 const PUBLISH_RESULT = "publish result";
-const SELECTION_COUNT = 3;
 const INIT_PRAISE = "init praise";
+const FIGHT_READY = "fight ready";
+const GAME_RESULT = "game result";
+const SELECTION_COUNT = 3;
 
-const getRandomInt = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-
-const getAnswerIndex = (answerID) => {
-  let answerIdx = -1;
-  praiseList.forEach((el, idx) => {
-    if (el.id === answerID) {
-      answerIdx = idx;
-      return;
-    }
-  });
-  return answerIdx;
-};
-
-const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
-
-const getRamdomPraiseList = (cnt, answerId) => {
-  const arr = [];
-  const answerIdx = getAnswerIndex(answerId);
-  while (arr.length < cnt - 1) {
-    const randInt = getRandomInt(0, praiseList.length);
-    if (!arr.includes(randInt) && randInt !== answerIdx) {
-      arr.push(randInt);
-    }
-  }
-  arr.push(answerIdx);
-  return shuffle(arr.map((idx) => praiseList[idx]));
-};
 
 const SelectionList = () => {
   const socketClient = useSocket();
@@ -56,8 +27,8 @@ const SelectionList = () => {
 
   useEffect(() => {
     if (socketClient) {
-      socketClient.on(GET_ANSWER, (praiseId) => {
-        setAnswerID(praiseId);
+      socketClient.on(FIGHT_READY, ({roomId, praises}) => {
+        setPraises(praises);
         setIsGame(true);
       });
 
@@ -66,6 +37,7 @@ const SelectionList = () => {
       });
       socketClient.on(INIT_PRAISE, (praises) => setPraises(praises));
       socketClient.emit(INIT_PRAISE);
+      socketClient.on(GAME_RESULT, (data) => {console.log(data)})
     }
     return () => {
       socketClient.off(INIT_PRAISE);
@@ -77,7 +49,7 @@ const SelectionList = () => {
   return (
     <>
       {isGame
-        ? getRamdomPraiseList(SELECTION_COUNT, answerID).map((praise) => (
+        ? praises.map((praise) => (
             <Selection
               key={`${praise.id}${isGame}${Date.now()}`}
               praise={praise}
