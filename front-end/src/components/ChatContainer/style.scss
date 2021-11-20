@@ -9,6 +9,9 @@
   height: 90vh;
   background: #ffb8b8;
   border-radius: 0px 30px 30px 0px;
+  margin: 0;
+  z-index: 2;
+  position: absolute;
 }
 
 .chatContainerScroll {
