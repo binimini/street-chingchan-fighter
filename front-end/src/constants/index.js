@@ -1,6 +1,6 @@
 export const MY_AVATAR = {
   x: 100,
-  y: 0,
+  y: 120,
   avatarSrcPosition: 0,
 };
 

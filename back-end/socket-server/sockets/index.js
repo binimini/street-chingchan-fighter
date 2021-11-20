@@ -32,7 +32,7 @@ const initSocket = (httpServer) => {
     initChatSocket(namespace, socket);
     initGameSocket(namespace, socket);
     initTimerSocket(namespace, socket);
-    socket._position = { x: 100, y: 0, avatarSrcPosition: 0 };
+    socket._position = { x: 100, y: 120, avatarSrcPosition: 0 };
 
     socket.on("set userInfo", async (userInfo) => {
       socket.nickname = userInfo.nickname;
