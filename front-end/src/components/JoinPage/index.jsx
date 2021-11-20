@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
 import MessageBox from "../MessageBox";
+import Button from "../Button";
 import "./style.scss";
 
 function JoinPage() {
@@ -8,8 +9,8 @@ function JoinPage() {
   const nickNameRef = useRef();
   const canvasContainer = useRef();
   const MAX_AVATARIDX = 5;
-
   const socketClient = useSocket();
+
   const clickJoinButton = (e) => {
     if (`${nickNameRef.current.value}`.trim().length > 0) {
       socketClient.emit("set userInfo", {
@@ -17,6 +18,17 @@ function JoinPage() {
         avatarIdx: avatarIdx,
       });
     } else alert("닉네임을 입력해주세요 ヽ(*。>Д<)o゜");
+  };
+
+  const handleNicknameInput = (e) => {
+    if (e.key === "Enter" && `${nickNameRef.current.value}`.trim().length > 0) {
+      if (`${nickNameRef.current.value}`.trim().length > 0) {
+        socketClient.emit("set userInfo", {
+          nickname: nickNameRef.current.value,
+          avatarIdx: avatarIdx,
+        });
+      } else alert("닉네임을 입력해주세요 ヽ(*。>Д<)o゜");
+    }
   };
 
   useEffect(() => {
@@ -68,13 +80,10 @@ function JoinPage() {
             type="text"
             placeholder="닉네임을 입력해주세요."
             ref={nickNameRef}
+            onKeyDown={handleNicknameInput}
           />
         </div>
-        <div className="join__button">
-          <div className="join__button__text" onClick={clickJoinButton}>
-            배틀장 입장
-          </div>
-        </div>
+        <Button onClick={clickJoinButton} title={"배틀장 입장"} />
         <footer className="join__footer"></footer>
       </div>
     </div>
